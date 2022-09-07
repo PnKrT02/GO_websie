@@ -1,7 +1,8 @@
 package main
 
 import ("fmt"
-"net/http")
+"net/http"
+"html/template")
 
 type User struct{
   name string
@@ -15,14 +16,16 @@ func (u User) getAllInfo() string {
     u.name, u.age, u.money)
 }
 
-func (u User) setNewName(newName string) {
+func (u *User) setNewName(newName string) {
   u.name = newName
 }
 
 func home_page(w http.ResponseWriter, r *http.Request) {
 jack := User{"Jack",27, -50, 4.3, 0.7}
-jack.setNewName("Jessica")
-  fmt.Fprintf(w, jack.getAllInfo())
+/*jack.setNewName("Jessica")
+  fmt.Fprintf(w, jack.getAllInfo())*/
+  tmpl, _ := template.ParseFiles("templates/home_page.html")
+  tmpl.Execute(w, jack)
 }
 
 func about_page(w http.ResponseWriter, r *http.Request) {
